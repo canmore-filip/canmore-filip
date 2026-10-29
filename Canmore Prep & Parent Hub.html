@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="cs" class="h-full bg-slate-950">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Canmore Prep & WILD Hub 🇨🇦 | Filipova příprava & Rodičovský Přehled</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Google Fonts: Inter & Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            heading: ['Outfit', 'sans-serif'],
+          },
+          colors: {
+            canmore: {
+              pine: '#1E392A',
+              forest: '#2E5A44',
+              leaf: '#407A5C',
+              red: '#C8102E',
+              gold: '#D4AF37',
+              slate: '#0F172A',
+              card: '#1E293B'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Card Flip 3D Perspective */
+    .perspective-1000 {
+      perspective: 1000px;
+    }
+    .transform-style-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .backface-hidden {
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+    .rotate-y-180 {
+      transform: rotateY(180deg);
+    }
+    
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+  </style>
+</head>
+
+<body class="h-full text-slate-100 font-sans antialiased bg-slate-950 flex flex-col selection:bg-red-600 selection:text-white">
+
+  <!-- ========================================== -->
+  <!-- TOP NAVIGATION & HEADER                    -->
+  <!-- ========================================== -->
+  <header class="border-b border-slate-800 bg-slate-900/90 backdrop-blur sticky top-0 z-40">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex flex-col md:flex-row items-center justify-between gap-3">
+      
+      <!-- Brand Logo & Student Badge -->
+      <div class="flex items-center space-x-3 w-full md:w-auto justify-between md:justify-start">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-red-600 via-emerald-800 to-slate-900 flex items-center justify-center shadow-lg border border-red-500/30">
+            <i class="fa-solid fa-mountain text-white text-lg"></i>
+          </div>
+          <div>
+            <div class="flex items-center gap-2">
+              <h1 class="font-heading font-extrabold text-lg sm:text-xl text-white tracking-tight">Canmore Prep 🇨🇦</h1>
+              <span id="syncBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1">
+                <span class="w-2 h-2 rounded-full bg-amber-400 inline-block animate-pulse"></span> Offline
+              </span>
+            </div>
+            <p class="text-xs text-slate-400 font-medium">Filipova příprava • Grade 11 & WILD Program</p>
+          </div>
+        </div>
+
+        <!-- Student ID Tag (Click to copy link for Parent) -->
+        <button onclick="shareParentLink()" title="Kopírovat odkaz pro rodiče" class="md:hidden text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-2.5 py-1.5 rounded-lg border border-slate-700 flex items-center gap-1.5">
+          <i class="fa-solid fa-share-nodes text-emerald-400"></i>
+          <span>Odkaz</span>
+        </button>
+      </div>
+
+      <!-- Header Mode Switcher (Student View vs Parent Dashboard) -->
+      <div class="flex items-center gap-2 bg-slate-950 p-1 rounded-xl border border-slate-800 w-full md:w-auto justify-center">
+        <button onclick="switchRole('student')" id="btnRoleStudent" class="px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-emerald-800 text-white shadow">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>Filipův Portál</span>
+        </button>
+        <button onclick="switchRole('parent')" id="btnRoleParent" class="px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white">
+          <i class="fa-solid fa-chart-line text-amber-400"></i>
+          <span>Rodičovský Přehled</span>
+        </button>
+      </div>
+
+      <!-- Share Link Button for Desktop -->
+      <div class="hidden md:flex items-center gap-2">
+        <button onclick="shareParentLink()" class="text-xs bg-slate-800 hover:bg-slate-700 text-slate-300 px-3 py-1.5 rounded-xl border border-slate-700 transition flex items-center gap-2">
+          <i class="fa-solid fa-link text-emerald-400"></i>
+          <span>Odkaz pro sledování pokroku</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- MAIN CONTAINER -->
+  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-5">
+
+    <!-- ========================================== -->
+    <!-- VIEW 1: STUDENT PORTAL (FILIP'S VIEW)      -->
+    <!-- ========================================== -->
+    <div id="viewStudent" class="space-y-6">
+
+      <!-- Parent Encouragement Banner (If present in Cloud) -->
+      <div id="parentNoteBanner" class="hidden bg-gradient-to-r from-amber-950/80 via-slate-900 to-slate-900 border border-amber-500/40 rounded-2xl p-4 flex items-start gap-3 shadow-lg">
+        <div class="w-9 h-9 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center shrink-0 mt-0.5">
+          <i class="fa-solid fa-heart text-base"></i>
+        </div>
+        <div class="flex-1">
+          <div class="flex items-center justify-between">
+            <h3 class="font-heading font-bold text-xs text-amber-300 uppercase tracking-wider">Zpráva od rodičů:</h3>
+            <span id="parentNoteTime" class="text-[10px] text-slate-400">Dnes</span>
+          </div>
+          <p id="parentNoteText" class="text-xs sm:text-sm text-slate-200 mt-1 font-medium italic leading-relaxed">
+            "Skvělá práce s matematickou terminologií! Jen tak dál!"
+          </p>
+        </div>
+      </div>
+
+      <!-- Top Stats & Streak Bar -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-orange-950 text-orange-400 border border-orange-800/50 flex items-center justify-center font-bold text-lg">
+            🔥
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Denní Série</div>
+            <div class="text-lg font-heading font-extrabold text-white"><span id="statStreak">0</span> dní</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-emerald-950 text-emerald-400 border border-emerald-800/50 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-circle-check"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Zvládnuto (100%)</div>
+            <div class="text-lg font-heading font-extrabold text-emerald-400"><span id="statMastered">0</span> / <span class="totalWordsVal">0</span></div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-sky-950 text-sky-400 border border-sky-800/50 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-chart-pie"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Celkový Pokrok</div>
+            <div class="text-lg font-heading font-extrabold text-sky-400"><span id="statMasteryPercent">0</span>%</div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-3.5 flex items-center gap-3">
+          <div class="w-10 h-10 rounded-xl bg-purple-950 text-purple-400 border border-purple-800/50 flex items-center justify-center font-bold text-lg">
+            <i class="fa-solid fa-clock-rotate-left"></i>
+          </div>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Dnes Procvičeno</div>
+            <div class="text-lg font-heading font-extrabold text-purple-300"><span id="statTodayCount">0</span> slov</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Practice Controls & Category Filters -->
+      <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col lg:flex-row items-center justify-between gap-4">
+        
+        <!-- Practice Modes Tabs -->
+        <div class="flex items-center gap-1.5 w-full lg:w-auto overflow-x-auto pb-1 lg:pb-0">
+          <button onclick="setPracticeMode('flashcards')" id="pTab-flashcards" class="pmode-btn active-pmode px-3.5 py-2 rounded-xl text-xs font-bold transition flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-clone text-emerald-400"></i> Kartičky
+          </button>
+          <button onclick="setPracticeMode('quiz')" id="pTab-quiz" class="pmode-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-list-check text-sky-400"></i> Kvíz (Výběr)
+          </button>
+          <button onclick="setPracticeMode('typing')" id="pTab-typing" class="pmode-btn px-3.5 py-2 rounded-xl text-xs font-bold text-slate-400 hover:text-white transition flex items-center gap-2 whitespace-nowrap">
+            <i class="fa-solid fa-keyboard text-amber-400"></i> Diktát & Psaní
+          </button>
+        </div>
+
+        <!-- Direction & Category Filters -->
+        <div class="flex flex-wrap items-center gap-2.5 w-full lg:w-auto justify-end">
+          
+          <!-- Direction Switcher -->
+          <button onclick="toggleDirection()" id="btnDirection" class="bg-slate-950 border border-slate-700 hover:border-slate-500 px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-200 transition flex items-center gap-2">
+            <span class="text-emerald-400 font-bold" id="dirText">🇨🇿 ➔ 🇨🇦 CZ do EN</span>
+            <i class="fa-solid fa-arrow-right-arrow-left text-[10px] text-slate-400"></i>
+          </button>
+
+          <!-- Category Dropdown -->
+          <select id="catSelect" onchange="handleFilterChange()" class="bg-slate-950 border border-slate-800 rounded-xl px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-emerald-500">
+            <option value="all">Všechny předměty</option>
+            <option value="math">📐 Math Pre-Calc 11</option>
+            <option value="english">📚 Academic English 11</option>
+            <option value="wild">🌲 WILD Outdoor Program</option>
+            <option value="alberta">🇨🇦 Alberta High School Life</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- MODE 1: FLASHCARDS INTERFACE -->
+      <div id="modeFlashcards" class="space-y-4">
+        <div class="max-w-2xl mx-auto flex flex-col items-center">
+          
+          <div class="w-full flex items-center justify-between text-xs text-slate-400 mb-2 px-1">
+            <span id="fcProgress">Karta 1 z 10</span>
+            <span class="flex items-center gap-1 text-slate-400">
+              <i class="fa-solid fa-hand-pointer text-emerald-400"></i> Klikni pro otočení
+            </span>
+          </div>
+
+          <!-- 3D Card -->
+          <div class="w-full h-80 sm:h-96 perspective-1000 cursor-pointer group" onclick="flipFlashcard()">
+            <div id="flashcardInner" class="w-full h-full transform-style-3d relative rounded-3xl border border-slate-800 bg-gradient-to-br from-slate-900 via-slate-900 to-slate-950 p-6 sm:p-8 flex flex-col justify-between hover:border-emerald-500/50 transition-colors shadow-2xl">
+              
+              <!-- FRONT -->
+              <div class="absolute inset-0 p-6 sm:p-8 backface-hidden flex flex-col justify-between rounded-3xl">
+                <div class="flex items-center justify-between">
+                  <span id="fcCategoryBadge" class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-800 text-emerald-400 border border-slate-700">
+                    Category
+                  </span>
+                  <button onclick="event.stopPropagation(); speakCurrentTerm()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-emerald-800 text-slate-300 hover:text-white flex items-center justify-center transition" title="Přečíst v angličtině">
+                    <i class="fa-solid fa-volume-high text-xs"></i>
+                  </button>
+                </div>
+
+                <div class="text-center my-auto">
+                  <span id="fcLangLabel" class="text-[11px] font-semibold text-slate-400 uppercase tracking-widest block mb-2">Otázka</span>
+                  <h2 id="fcFrontText" class="font-heading font-extrabold text-3xl sm:text-4xl text-white tracking-wide">
+                    Word Front
+                  </h2>
+                  <p id="fcPhonetic" class="text-xs sm:text-sm font-mono text-emerald-400 mt-2">
+                    / phonetic /
+                  </p>
+                </div>
+
+                <div class="text-center text-xs text-slate-500">
+                  <i class="fa-solid fa-rotate text-emerald-500 mr-1"></i> Klikni na kartu pro odpověď
+                </div>
+              </div>
+
+              <!-- BACK -->
+              <div class="absolute inset-0 p-6 sm:p-8 backface-hidden rotate-y-180 flex flex-col justify-between rounded-3xl bg-slate-900">
+                <div class="flex items-center justify-between border-b border-slate-800 pb-2">
+                  <span class="text-[10px] font-bold uppercase tracking-wider text-slate-400">Správná Odpověď</span>
+                  <span id="fcMasteryTag" class="text-xs font-bold text-amber-400">Úroveň: 50%</span>
+                </div>
+
+                <div class="my-auto space-y-3">
+                  <h3 id="fcBackText" class="font-heading font-bold text-2xl sm:text-3xl text-amber-400 text-center">
+                    Word Back
+                  </h3>
+                  <div class="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-left">
+                    <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Definice / Kontext:</p>
+                    <p id="fcDefinition" class="text-xs text-slate-200 mt-0.5 leading-relaxed"></p>
+                  </div>
+                  <div class="bg-slate-950/40 p-2.5 rounded-xl border border-slate-800/60 text-left">
+                    <p class="text-[10px] font-bold text-emerald-400 uppercase tracking-wider">Příklad ve věte:</p>
+                    <p id="fcExample" class="text-xs text-slate-300 italic mt-0.5 leading-relaxed"></p>
+                  </div>
+                </div>
+
+                <div class="text-center text-xs text-slate-500">
+                  Otočit zpět
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Rating & Controls -->
+          <div class="w-full flex items-center justify-between gap-3 mt-5">
+            <button onclick="prevFlashcard()" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs font-semibold flex items-center gap-1.5">
+              <i class="fa-solid fa-chevron-left"></i> Předchozí
+            </button>
+
+            <div class="flex items-center gap-2">
+              <button onclick="rateWord(false)" title="Neznal jsem / Těžké" class="px-4 py-2.5 rounded-xl bg-rose-950/80 border border-rose-800/60 text-rose-300 hover:bg-rose-900 transition text-xs font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-xmark"></i> Znovu
+              </button>
+              <button onclick="rateWord(true)" title="Znal jsem / Snadné" class="px-4 py-2.5 rounded-xl bg-emerald-900/80 border border-emerald-700/60 text-emerald-200 hover:bg-emerald-800 transition text-xs font-bold flex items-center gap-1.5">
+                <i class="fa-solid fa-check"></i> Znám!
+              </button>
+            </div>
+
+            <button onclick="nextFlashcard()" class="px-4 py-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:bg-slate-800 hover:text-white transition text-xs font-semibold flex items-center gap-1.5">
+              Další <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MODE 2: MULTIPLE CHOICE QUIZ -->
+      <div id="modeQuiz" class="hidden space-y-4">
+        <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span id="quizCatBadge" class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-800 text-emerald-400 border border-slate-700">Category</span>
+            <span class="text-xs text-slate-400 font-mono">Kvízové skóre: <strong id="quizScoreText" class="text-amber-400 font-bold">0</strong></span>
+          </div>
+
+          <div>
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block mb-1">Přelož výraz:</span>
+            <h3 id="quizQuestionText" class="font-heading font-extrabold text-2xl sm:text-3xl text-white">Question...</h3>
+          </div>
+
+          <div id="quizOptions" class="space-y-2.5">
+            <!-- Options dynamically rendered -->
+          </div>
+
+          <div id="quizFeedback" class="hidden p-4 rounded-2xl border text-xs leading-relaxed">
+            <!-- Feedback text -->
+          </div>
+
+          <div class="flex justify-end pt-2">
+            <button id="btnQuizNext" onclick="nextQuizQuestion()" disabled class="px-5 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-600 disabled:opacity-40 disabled:cursor-not-allowed text-white text-xs font-bold transition flex items-center gap-2">
+              <span>Další otázka</span>
+              <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- MODE 3: TYPING / SPELLING DRILL -->
+      <div id="modeTyping" class="hidden space-y-4">
+        <div class="max-w-2xl mx-auto bg-slate-900 border border-slate-800 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
+          
+          <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+            <span id="typeCatBadge" class="text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full bg-slate-800 text-emerald-400 border border-slate-700">Category</span>
+            <span class="text-xs text-slate-400">Diktát & Přesný pravopis</span>
+          </div>
+
+          <div class="space-y-2">
+            <span class="text-[11px] font-bold text-slate-400 uppercase tracking-widest block">Napiš přesný překlad:</span>
+            <h3 id="typePromptText" class="font-heading font-extrabold text-2xl sm:text-3xl text-white">Prompt...</h3>
+            <p id="typeHintText" class="text-xs text-slate-400 italic">Nápověda: -</p>
+          </div>
+
+          <form onsubmit="handleTypingSubmit(event)" class="space-y-3">
+            <div class="relative">
+              <input type="text" id="typeInput" autocomplete="off" placeholder="Napiš odpověď..." 
+                     class="w-full bg-slate-950 border border-slate-800 rounded-2xl px-4 py-3.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-emerald-500 font-mono transition">
+              <button type="button" onclick="speakCurrentTerm()" class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-2">
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+            </div>
+
+            <div class="flex items-center justify-between gap-3">
+              <button type="button" onclick="revealTypeHint()" class="text-xs text-amber-400 hover:underline">
+                <i class="fa-solid fa-lightbulb mr-1"></i> Ukázat první písmena
+              </button>
+              
+              <button type="submit" id="btnTypeSubmit" class="px-6 py-3 rounded-xl bg-emerald-700 hover:bg-emerald-600 text-white font-bold text-xs transition">
+                Zkontrolovat
+              </button>
+            </div>
+          </form>
+
+          <div id="typeFeedback" class="hidden p-4 rounded-2xl border text-xs leading-relaxed">
+            <!-- Feedback -->
+          </div>
+
+        </div>
+      </div>
+
+      <!-- WORD BANK TABLE / SRS MASTER LIST -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-5 shadow-xl space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div>
+            <h3 class="font-heading font-bold text-base text-white flex items-center gap-2">
+              <i class="fa-solid fa-layer-group text-emerald-400"></i> Databáze Slovíček & Úroveň Zvládnutí
+            </h3>
+            <p class="text-xs text-slate-400 mt-0.5">Měření zapamatování algoritmem rozloženého opakování (0 % = Nové, 100 % = Zvládnuto)</p>
+          </div>
+
+          <div class="relative w-full sm:w-64">
+            <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+            <input type="text" id="searchVocabInput" oninput="renderVocabTable()" placeholder="Hledat slovo..." 
+                   class="w-full bg-slate-950 border border-slate-800 rounded-xl pl-8 pr-3 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-emerald-500">
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead>
+              <tr class="text-[11px] font-bold uppercase tracking-wider text-slate-400 border-b border-slate-800">
+                <th class="py-2.5 px-3">Anglický Výraz</th>
+                <th class="py-2.5 px-3">Český Překlad</th>
+                <th class="py-2.5 px-3">Předmět</th>
+                <th class="py-2.5 px-3">Úroveň</th>
+                <th class="py-2.5 px-3 text-right">Akce</th>
+              </tr>
+            </thead>
+            <tbody id="vocabTableBody" class="divide-y divide-slate-800/60 text-xs">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ========================================== -->
+    <!-- VIEW 2: PARENT DASHBOARD (RODIČOVSKÝ PŘEHLED) -->
+    <!-- ========================================== -->
+    <div id="viewParent" class="hidden space-y-6">
+
+      <div class="bg-gradient-to-r from-slate-900 via-amber-950/30 to-slate-900 border border-amber-500/30 rounded-3xl p-6 shadow-2xl flex flex-col md:flex-row items-center justify-between gap-6">
+        <div class="space-y-1 text-center md:text-left">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-950/80 text-amber-300 text-xs font-bold border border-amber-800/60">
+            <i class="fa-solid fa-eye"></i> Živý Rodičovský Monitor
+          </div>
+          <h2 class="font-heading font-extrabold text-2xl sm:text-3xl text-white">Přehled Přípravy: Filip</h2>
+          <p class="text-xs text-slate-400 max-w-xl">
+            Tato obrazovka zobrazuje v reálném čase pokrok Filipa. Data se automaticky synchronizují z jeho mobilu či počítače přes cloud.
+          </p>
+        </div>
+
+        <div class="bg-slate-950/80 p-4 rounded-2xl border border-slate-800 text-center min-w-[200px]">
+          <span class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block">Poslední Aktivita</span>
+          <span id="parentLastActiveText" class="text-sm font-bold text-emerald-400 mt-1 block">Načítám...</span>
+          <span id="parentSyncStatus" class="text-[10px] text-slate-500 block mt-0.5">Cloud synchronizován</span>
+        </div>
+      </div>
+
+      <!-- Parent Key Stats Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Celkové Zvládnutí Látky</div>
+          <div class="flex items-baseline gap-2">
+            <span id="pStatOverall" class="text-3xl font-heading font-extrabold text-emerald-400">0%</span>
+            <span class="text-xs text-slate-400">z cíle 100%</span>
+          </div>
+          <div class="w-full bg-slate-950 h-2 rounded-full mt-3 overflow-hidden border border-slate-800">
+            <div id="pBarOverall" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+          </div>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Aktivní Série (Streak)</div>
+          <div class="flex items-baseline gap-2">
+            <span id="pStatStreak" class="text-3xl font-heading font-extrabold text-orange-400">0</span>
+            <span class="text-xs text-slate-400">dní v řadě 🔥</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2" id="pStreakHint">Pravidelnost je klíčem k úspěchu v Kanadě.</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Naučená Slovíčka</div>
+          <div class="flex items-baseline gap-2">
+            <span id="pStatMasteredCount" class="text-3xl font-heading font-extrabold text-sky-400">0</span>
+            <span class="text-xs text-slate-400">/ <span class="totalWordsVal">0</span> plně uloženo</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2">Slovíčka s úspěšností 100% v testech.</p>
+        </div>
+
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5">
+          <div class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2">Počet Odpovědí</div>
+          <div class="flex items-baseline gap-2">
+            <span id="pStatTotalAnswers" class="text-3xl font-heading font-extrabold text-purple-400">0</span>
+            <span class="text-xs text-slate-400">procvičení</span>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-2">Kombinované kartičky + kvízy.</p>
+        </div>
+
+      </div>
+
+      <!-- Subject Mastery Breakdown & Send Encouragement -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Subject Breakdown Bars (7 Cols) -->
+        <div class="lg:col-span-7 bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-5">
+          <h3 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+            <i class="fa-solid fa-chart-bar text-amber-400"></i> Pokrok podle jednotlivých předmětů
+          </h3>
+
+          <div class="space-y-4">
+            <!-- Math 11 -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-slate-200">📐 Math Pre-Calculus 11</span>
+                <span id="pValMath" class="text-emerald-400">0%</span>
+              </div>
+              <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                <div id="pBarMath" class="bg-emerald-500 h-full w-0 transition-all duration-500"></div>
+              </div>
+            </div>
+
+            <!-- English 11 -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-slate-200">📚 Academic English 11</span>
+                <span id="pValEnglish" class="text-sky-400">0%</span>
+              </div>
+              <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                <div id="pBarEnglish" class="bg-sky-500 h-full w-0 transition-all duration-500"></div>
+              </div>
+            </div>
+
+            <!-- WILD Program -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-slate-200">🌲 Canmore WILD Outdoor Program</span>
+                <span id="pValWild" class="text-amber-400">0%</span>
+              </div>
+              <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                <div id="pBarWild" class="bg-amber-500 h-full w-0 transition-all duration-500"></div>
+              </div>
+            </div>
+
+            <!-- Alberta Life -->
+            <div class="space-y-1.5">
+              <div class="flex justify-between text-xs font-bold">
+                <span class="text-slate-200">🇨🇦 Alberta High School Life</span>
+                <span id="pValAlberta" class="text-purple-400">0%</span>
+              </div>
+              <div class="w-full bg-slate-950 h-2.5 rounded-full overflow-hidden border border-slate-800">
+                <div id="pBarAlberta" class="bg-purple-500 h-full w-0 transition-all duration-500"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Parent Encouragement Form (5 Cols) -->
+        <div class="lg:col-span-5 bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4 flex flex-col justify-between">
+          <div>
+            <h3 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+              <i class="fa-solid fa-paper-plane text-amber-400"></i> Poslat pochvalu / vzkaz Filipovi
+            </h3>
+            <p class="text-xs text-slate-400 mt-1">
+              Napište krátkou zprávu. Zobrazí se Filipovi na hlavní obrazovce aplikace ihned po spuštění.
+            </p>
+
+            <div class="mt-4 space-y-2">
+              <textarea id="parentNoteInput" rows="3" placeholder="např. Skvělá práce s matematickou terminologií! Dnes ti to šlo výborně." 
+                        class="w-full bg-slate-950 border border-slate-800 rounded-2xl p-3 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-500 resize-none"></textarea>
+            </div>
+          </div>
+
+          <button onclick="sendParentEncouragement()" class="w-full py-3 bg-amber-600 hover:bg-amber-500 text-slate-950 font-bold text-xs rounded-xl transition flex items-center justify-center gap-2 shadow-lg">
+            <i class="fa-solid fa-heart"></i>
+            <span>Odeslat vzkaz Filipovi</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Weak Spots / Review Needed Section -->
+      <div class="bg-slate-900 border border-slate-800 rounded-3xl p-6 space-y-4">
+        <h3 class="font-heading font-bold text-lg text-white flex items-center gap-2">
+          <i class="fa-solid fa-triangle-exclamation text-rose-400"></i> Slovíčka vyžadující zvýšenou pozornost
+        </h3>
+        <p class="text-xs text-slate-400">Položky, ve kterých Filip udělal nejvíce chyb v kvízech a diktátech:</p>
+
+        <div id="weakSpotsContainer" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- TOAST NOTIFICATIONS -->
+  <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- ========================================== -->
+  <!-- FIREBASE & APPLICATION LOGIC               -->
+  <!-- ========================================== -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+    import { getAuth, signInAnonymously, signInWithCustomToken } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, getDoc, onSnapshot } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+    // Global variables provided by host environment or fallbacks
+    const appId = typeof __app_id !== 'undefined' ? __app_id : 'canmore-prep-app';
+    const firebaseConfig = typeof __firebase_config !== 'undefined' ? JSON.parse(__firebase_config) : {
+      apiKey: "demo-api-key",
+      authDomain: "demo-app.firebaseapp.com",
+      projectId: "demo-app",
+      storageBucket: "demo-app.appspot.com",
+      messagingSenderId: "123456789",
+      appId: "1:123456789:web:demo"
+    };
+    const initialAuthToken = typeof __initial_auth_token !== 'undefined' ? __initial_auth_token : null;
+
+    // Student ID identifier for cloud sync
+    const STUDENT_ID = 'FILIP-CANMORE-2025';
+
+    // Firebase state
+    let app, auth, db, user = null;
+    let cloudSynced = false;
+
+    // Master Vocabulary Data
+    const defaultVocabulary = [
+      // Math Pre-Calculus 11
+      { id: "m1", category: "math", en: "Quadratic Function", cz: "Kvadratická funkce", phonetic: "/kwɒdˈræt.ɪk/", def: "Funkce 2. stupně ve tvaru f(x) = ax² + bx + c tvořící parabolu.", ex: "The height of the projectile is modeled by a quadratic function." },
+      { id: "m2", category: "math", en: "Factoring", cz: "Rozklad na součin", phonetic: "/ˈfæk.tər.ɪŋ/", def: "Rozložení algebraického výrazu na jednodušší činitele.", ex: "Factor the polynomial to find the x-intercepts." },
+      { id: "m3", category: "math", en: "Asymptote", cz: "Asymptota", phonetic: "/ˈæs.ɪmp.toʊt/", def: "Přímka, ke které se graf funkce blíží, ale nikdy ji neprotne.", ex: "The rational function has a vertical asymptote at x = 2." },
+      { id: "m4", category: "math", en: "Domain & Range", cz: "Definiční obor a obor hodnot", phonetic: "/doʊˈmeɪn ænd reɪndʒ/", def: "Domain = přípustné vstupy (x); Range = možné výstupy (y).", ex: "The domain of f(x) = √x is all x ≥ 0." },
+      { id: "m5", category: "math", en: "Reciprocal", cz: "Převrácená hodnota", phonetic: "/rɪˈsɪp.rə.kəl/", def: "Hodnota v převráceném poměru (1/x).", ex: "The reciprocal of 3/4 is 4/3." },
+      { id: "m6", category: "math", en: "Radical Expression", cz: "Výraz s odmocninou", phonetic: "/ˈræd.ɪ.kəl/", def: "Algebraický výraz obsahující odmocninu.", ex: "Simplify the radical expression before solving." },
+      { id: "m7", category: "math", en: "Sine Ratio", cz: "Sinusový poměr", phonetic: "/saɪn ˈreɪ.ʃi.oʊ/", def: "Poměr protilehlé odvěsny k přeponě v pravoúhlém trojúhelníku.", ex: "Use sine ratio to compute the mountain gradient." },
+
+      // Academic English 11
+      { id: "e1", category: "english", en: "Thesis Statement", cz: "Hlavní téze esej", phonetic: "/ˈθiː.sɪs/", def: "Klíčová věta v úvodu formulující hlavní argument práce.", ex: "Your thesis statement must be concise and arguable." },
+      { id: "e2", category: "english", en: "Foreshadowing", cz: "Náznak / Předvěsť děje", phonetic: "/fɔːrˈʃæd.oʊ.ɪŋ/", def: "Literární prvek náznakující nadcházející události v příběhu.", ex: "Dark clouds early in the chapter foreshadowed the tragic end." },
+      { id: "e3", category: "english", en: "Primary Source", cz: "Primární pramen", phonetic: "/ˈpraɪ.mer.i sɔːrs/", def: "Původní dokument z první ruky vytvořený v době události.", ex: "A soldier's diary from WWI is a primary source." },
+      { id: "e4", category: "english", en: "Rubric", cz: "Hodnotící tabulka kritérií", phonetic: "/ˈruː.brɪk/", def: "Bodovací přehled stanovený učitelem pro hodnocení projektů.", ex: "Review the writing rubric before submitting your essay." },
+      { id: "e5", category: "english", en: "Peer Review", cz: "Vzájemná kontrola spolužáků", phonetic: "/pɪr rɪˈvjuː/", def: "Kritické posouzení práce spolužákem před odevzdáním.", ex: "We exchanged drafts for a peer review session in English 11." },
+      { id: "e6", category: "english", en: "Literary Device", cz: "Literární prostředek", phonetic: "/ˈlɪt.ər.ər.i dɪˈvaɪs/", def: "Technika autora k obohacení textu (metafora, aliterace).", ex: "Irony is a powerful literary device in Canadian drama." },
+
+      // WILD Outdoor Program
+      { id: "w1", category: "wild", en: "Bear Spray", cz: "Sprej na medvědy", phonetic: "/beər spreɪ/", def: "Obranný pepřový sprej pro odrazení medvěda zblízka.", ex: "Keep your bear spray readily accessible on your chest harness." },
+      { id: "w2", category: "wild", en: "Backcountry", cz: "Volná divočina mimo trasy", phonetic: "/ˈbæk.kʌn.tri/", def: "Odlehlá přírodní území bez silnic a infrastruktury.", ex: "WILD program includes a 3-day backcountry expedition in Kananaskis." },
+      { id: "w3", category: "wild", en: "Avalanche Transceiver", cz: "Lavinový vyhledávač (pípák)", phonetic: "/ˈæv.ə.læntʃ/", def: "Elektronický přístroj pro lokalizaci zasypaných v lavině.", ex: "Check your transceiver batteries before heading into the snow." },
+      { id: "w4", category: "wild", en: "Leave No Trace", cz: "Zásady nezanechávání stop", phonetic: "/liːv noʊ treɪs/", def: "7 etických pravidel šetrného chování v přírodě.", ex: "Pack out all trash following Leave No Trace principles." },
+      { id: "w5", category: "wild", en: "Hypothermia", cz: "Podchlazení organismu", phonetic: "/ˌhaɪ.poʊˈθɜːr.mi.ə/", def: "Nebezpečný pokles tělesné teploty v chladném prostředí.", ex: "Wet cotton clothing rapidly causes hypothermia in freezing wind." },
+      { id: "w6", category: "wild", en: "Trailhead", cz: "Začátek turistické trasy", phonetic: "/ˈtreɪl.hed/", def: "Místo nástupu na turistickou stezku.", ex: "Meet the instructor at the Grassi Lakes trailhead at 8:00 AM." },
+
+      // Alberta High School Life
+      { id: "a1", category: "alberta", en: "Block Schedule", cz: "Blokový rozvrh hodin", phonetic: "/blɒk ˈskedʒ.uːl/", def: "Systém výuky 4 delších předmětů (80 min) za semestr.", ex: "Block 1 starts at 8:30 AM in Canmore Collegiate High." },
+      { id: "a2", category: "alberta", en: "CALM Course", cz: "Kurz CALM (Životní dovednosti)", phonetic: "/kɑːm/", def: "Povinný kurz Career and Life Management v Albertě.", ex: "CALM teaches financial budgeting and resume writing." },
+      { id: "a3", category: "alberta", en: "Summative Assessment", cz: "Finální hodnocení do známky", phonetic: "/ˈsʌm.ə.tɪv/", def: "Testy a projekty přímo určující výsledné známky v %.", ex: "The final exam is a summative assessment worth 30%." },
+      { id: "a4", category: "alberta", en: "Drop-Box", cz: "Digitální odevzdávání úkolů", phonetic: "/drɒp bɒks/", def: "Složka v Google Classroom pro nahrání hotových úkolů.", ex: "Upload your PDF essay to the assignments drop-box before midnight." }
+    ];
+
+    // State object
+    let appState = {
+      masteryMap: {}, // wordId => { score: 0-100, correctCount: 0, wrongCount: 0, lastReviewed: timestamp }
+      streak: 1,
+      lastActiveDate: new Date().toISOString().split('T')[0],
+      totalPracticedAnswers: 0,
+      todayPracticedCount: 0,
+      parentEncouragement: "",
+      parentNoteTime: ""
+    };
+
+    // UI Interactive State
+    let activeRole = 'student'; // 'student' | 'parent'
+    let currentPracticeMode = 'flashcards'; // 'flashcards' | 'quiz' | 'typing'
+    let direction = 'cz_en'; // 'cz_en' (CZ prompt -> EN answer) | 'en_cz' (EN prompt -> CZ answer)
+    let selectedCategory = 'all';
+
+    let currentCardIndex = 0;
+    let isFlipped = false;
+
+    let quizCurrentItem = null;
+    let quizScore = 0;
+    let quizAnswered = false;
+
+    let typeCurrentItem = null;
+
+    // Window Exposure & Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initFirebase();
+      checkURLParams();
+      loadLocalState();
+      updateTotalWordsLabels();
+      renderAll();
+    });
+
+    function checkURLParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      if (urlParams.get('view') === 'parent' || urlParams.get('role') === 'parent') {
+        switchRole('parent');
+      }
+    }
+
+    function updateTotalWordsLabels() {
+      document.querySelectorAll('.totalWordsVal').forEach(el => el.innerText = defaultVocabulary.length);
+    }
+
+    /* ==================================================== */
+    /* FIREBASE CLOUD SYNC LOGIC                            */
+    /* ==================================================== */
+    async function initFirebase() {
+      try {
+        app = initializeApp(firebaseConfig);
+        auth = getAuth(app);
+        db = getFirestore(app);
+
+        if (initialAuthToken) {
+          try {
+            const u = await signInWithCustomToken(auth, initialAuthToken);
+            user = u.user;
+          } catch(e) {
+            const u = await signInAnonymously(auth);
+            user = u.user;
+          }
+        } else {
+          const u = await signInAnonymously(auth);
+          user = u.user;
+        }
+
+        updateSyncBadge(true, "Cloud Připojen");
+        setupCloudListener();
+      } catch (err) {
+        console.warn("Firebase fallback to LocalStorage:", err);
+        updateSyncBadge(false, "Lokální Režim");
+      }
+    }
+
+    function updateSyncBadge(online, text) {
+      const badge = document.getElementById('syncBadge');
+      if (online) {
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-pulse"></span> ${text}`;
+        badge.className = "text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 border border-emerald-800 flex items-center gap-1";
+      } else {
+        badge.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span> ${text}`;
+        badge.className = "text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700 flex items-center gap-1";
+      }
+    }
+
+    function setupCloudListener() {
+      if (!db || !user) return;
+      
+      // Path Rule 1: /artifacts/{appId}/public/data/students/{STUDENT_ID}
+      const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', STUDENT_ID);
+
+      onSnapshot(studentDocRef, (snapshot) => {
+        if (snapshot.exists()) {
+          const cloudData = snapshot.data();
+          if (cloudData.appState) {
+            appState = { ...appState, ...cloudData.appState };
+            saveLocalState();
+            renderAll();
+          }
+        }
+      }, (err) => {
+        console.warn("Snapshot error:", err);
+      });
+    }
+
+    async function syncToCloud() {
+      saveLocalState();
+      if (!db || !user) return;
+
+      try {
+        const studentDocRef = doc(db, 'artifacts', appId, 'public', 'data', 'students', STUDENT_ID);
+        await setDoc(studentDocRef, {
+          studentName: "Filip",
+          appState: appState,
+          lastUpdated: new Date().toISOString()
+        }, { merge: true });
+      } catch (e) {
+        console.warn("Error saving to cloud:", e);
+      }
+    }
+
+    /* ==================================================== */
+    /* LOCAL STORAGE & STATE MANAGEMENT                     */
+    /* ==================================================== */
+    function loadLocalState() {
+      const saved = localStorage.getItem('canmore_filip_state');
+      if (saved) {
+        try {
+          appState = JSON.parse(saved);
+        } catch(e) {}
+      }
+      checkStreak();
+    }
+
+    function saveLocalState() {
+      localStorage.setItem('canmore_filip_state', JSON.stringify(appState));
+    }
+
+    function checkStreak() {
+      const today = new Date().toISOString().split('T')[0];
+      if (appState.lastActiveDate !== today) {
+        const last = new Date(appState.lastActiveDate);
+        const current = new Date(today);
+        const diffDays = Math.round((current - last) / (1000 * 60 * 60 * 24));
+
+        if (diffDays === 1) {
+          appState.streak += 1;
+        } else if (diffDays > 1) {
+          appState.streak = 1;
+        }
+        appState.lastActiveDate = today;
+        appState.todayPracticedCount = 0;
+      }
+    }
+
+    function getFilteredList() {
+      if (selectedCategory === 'all') return defaultVocabulary;
+      return defaultVocabulary.filter(item => item.category === selectedCategory);
+    }
+
+    function getMastery(wordId) {
+      return appState.masteryMap[wordId]?.score || 0;
+    }
+
+    function updateWordMastery(wordId, isCorrect) {
+      checkStreak();
+      if (!appState.masteryMap[wordId]) {
+        appState.masteryMap[wordId] = { score: 0, correctCount: 0, wrongCount: 0, lastReviewed: new Date().toISOString() };
+      }
+
+      const item = appState.masteryMap[wordId];
+      if (isCorrect) {
+        item.score = Math.min(100, item.score + 25);
+        item.correctCount += 1;
+      } else {
+        item.score = Math.max(0, item.score - 20);
+        item.wrongCount += 1;
+      }
+      item.lastReviewed = new Date().toISOString();
+
+      appState.totalPracticedAnswers += 1;
+      appState.todayPracticedCount += 1;
+
+      syncToCloud();
+      renderStats();
+      renderVocabTable();
+    }
+
+    /* ==================================================== */
+    /* NAVIGATION & UI SWITCHING                            */
+    /* ==================================================== */
+    window.switchRole = function(role) {
+      activeRole = role;
+      document.getElementById('viewStudent').classList.toggle('hidden', role !== 'student');
+      document.getElementById('viewParent').classList.toggle('hidden', role !== 'parent');
+
+      document.getElementById('btnRoleStudent').className = role === 'student'
+        ? "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-emerald-800 text-white shadow"
+        : "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white";
+
+      document.getElementById('btnRoleParent').className = role === 'parent'
+        ? "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 bg-amber-600 text-slate-950 shadow"
+        : "px-4 py-1.5 rounded-lg text-xs font-bold transition flex items-center gap-2 text-slate-400 hover:text-white";
+
+      if (role === 'parent') {
+        renderParentDashboard();
+      } else {
+        renderAll();
+      }
+    };
+
+    window.setPracticeMode = function(mode) {
+      currentPracticeMode = mode;
+      document.getElementById('modeFlashcards').classList.toggle('hidden', mode !== 'flashcards');
+      document.getElementById('modeQuiz').classList.toggle('hidden', mode !== 'quiz');
+      document.getElementById('modeTyping').classList.toggle('hidden', mode !== 'typing');
+
+      document.querySelectorAll('.pmode-btn').forEach(btn => {
+        btn.classList.remove('active-pmode', 'bg-slate-800', 'text-white');
+        btn.classList.add('text-slate-400');
+      });
+
+      const activeTab = document.getElementById(`pTab-${mode}`);
+      if (activeTab) {
+        activeTab.classList.add('active-pmode', 'bg-slate-800', 'text-white');
+        activeTab.classList.remove('text-slate-400');
+      }
+
+      if (mode === 'quiz') initQuizQuestion();
+      if (mode === 'typing') initTypingQuestion();
+      if (mode === 'flashcards') renderFlashcard();
+    };
+
+    window.toggleDirection = function() {
+      direction = direction === 'cz_en' ? 'en_cz' : 'cz_en';
+      document.getElementById('dirText').innerText = direction === 'cz_en' ? "🇨🇿 ➔ 🇨🇦 CZ do EN" : "🇨🇦 ➔ 🇨🇿 EN do CZ";
+      showToast(`Režim zkoušení změněn na: ${direction === 'cz_en' ? 'Čeština ➔ Angličtina' : 'Angličtina ➔ Čeština'}`, "info");
+      
+      renderCurrentMode();
+    };
+
+    window.handleFilterChange = function() {
+      selectedCategory = document.getElementById('catSelect').value;
+      currentCardIndex = 0;
+      renderCurrentMode();
+      renderVocabTable();
+    };
+
+    function renderCurrentMode() {
+      if (currentPracticeMode === 'flashcards') renderFlashcard();
+      if (currentPracticeMode === 'quiz') initQuizQuestion();
+      if (currentPracticeMode === 'typing') initTypingQuestion();
+    }
+
+    /* ==================================================== */
+    /* MODE 1: FLASHCARDS INTERFACE                         */
+    /* ==================================================== */
+    function renderFlashcard() {
+      const list = getFilteredList();
+      isFlipped = false;
+      document.getElementById('flashcardInner').classList.remove('rotate-y-180');
+
+      if (list.length === 0) return;
+
+      if (currentCardIndex >= list.length) currentCardIndex = 0;
+      const item = list[currentCardIndex];
+
+      const frontText = direction === 'cz_en' ? item.cz : item.en;
+      const backText = direction === 'cz_en' ? item.en : item.cz;
+      const frontLang = direction === 'cz_en' ? "Český výraz" : "Anglický výraz";
+
+      document.getElementById('fcCategoryBadge').innerText = item.category.toUpperCase();
+      document.getElementById('fcLangLabel').innerText = frontLang;
+      document.getElementById('fcFrontText').innerText = frontText;
+      document.getElementById('fcPhonetic').innerText = direction === 'en_cz' ? item.phonetic : "";
+      
+      document.getElementById('fcBackText').innerText = backText;
+      document.getElementById('fcDefinition').innerText = item.def;
+      document.getElementById('fcExample').innerText = `"${item.ex}"`;
+
+      const mastery = getMastery(item.id);
+      document.getElementById('fcMasteryTag').innerText = `Úroveň: ${mastery}%`;
+
+      document.getElementById('fcProgress').innerText = `Karta ${currentCardIndex + 1} z ${list.length}`;
+    }
+
+    window.flipFlashcard = function() {
+      isFlipped = !isFlipped;
+      document.getElementById('flashcardInner').classList.toggle('rotate-y-180', isFlipped);
+    };
+
+    window.nextFlashcard = function() {
+      const list = getFilteredList();
+      currentCardIndex = (currentCardIndex + 1) % list.length;
+      renderFlashcard();
+    };
+
+    window.prevFlashcard = function() {
+      const list = getFilteredList();
+      currentCardIndex = (currentCardIndex - 1 + list.length) % list.length;
+      renderFlashcard();
+    };
+
+    window.rateWord = function(isCorrect) {
+      const list = getFilteredList();
+      const item = list[currentCardIndex];
+      updateWordMastery(item.id, isCorrect);
+
+      if (isCorrect) {
+        showToast(`Výborně! "${item.en}" posunuto v naučení.`, "success");
+      } else {
+        showToast(`Nevadí! "${item.en}" bude zařazeno k častějšímu opakování.`, "warning");
+      }
+
+      nextFlashcard();
+    };
+
+    window.speakCurrentTerm = function() {
+      const list = getFilteredList();
+      if (list.length === 0) return;
+      const item = list[currentCardIndex];
+      
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance(item.en);
+        u.lang = 'en-CA';
+        window.speechSynthesis.speak(u);
+      }
+    };
+
+    /* ==================================================== */
+    /* MODE 2: MULTIPLE CHOICE QUIZ                         */
+    /* ==================================================== */
+    function initQuizQuestion() {
+      const list = getFilteredList();
+      quizAnswered = false;
+      document.getElementById('btnQuizNext').disabled = true;
+      document.getElementById('quizFeedback').classList.add('hidden');
+
+      if (list.length === 0) return;
+
+      quizCurrentItem = list[Math.floor(Math.random() * list.length)];
+      
+      const questionPrompt = direction === 'cz_en' ? quizCurrentItem.cz : quizCurrentItem.en;
+      const correctAnswer = direction === 'cz_en' ? quizCurrentItem.en : quizCurrentItem.cz;
+
+      document.getElementById('quizCatBadge').innerText = quizCurrentItem.category.toUpperCase();
+      document.getElementById('quizQuestionText').innerText = questionPrompt;
+      document.getElementById('quizScoreText').innerText = quizScore;
+
+      // Pick 3 distractors
+      const distractors = defaultVocabulary
+        .filter(v => v.id !== quizCurrentItem.id)
+        .map(v => direction === 'cz_en' ? v.en : v.cz);
+      
+      shuffleArray(distractors);
+      const options = [correctAnswer, distractors[0], distractors[1], distractors[2]];
+      shuffleArray(options);
+
+      const optionsContainer = document.getElementById('quizOptions');
+      optionsContainer.innerHTML = '';
+
+      options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.className = `w-full text-left p-3.5 rounded-xl border border-slate-800 bg-slate-950/80 hover:bg-slate-800 text-xs sm:text-sm text-slate-200 transition flex items-center justify-between group`;
+        btn.onclick = () => selectQuizAnswer(opt, correctAnswer, btn);
+        btn.innerHTML = `
+          <div class="flex items-center gap-3">
+            <span class="w-6 h-6 rounded-lg bg-slate-800 text-slate-400 group-hover:bg-emerald-800 group-hover:text-white flex items-center justify-center font-mono font-bold text-xs">${String.fromCharCode(65 + idx)}</span>
+            <span>${opt}</span>
+          </div>
+          <i class="fa-regular fa-circle text-slate-600"></i>
+        `;
+        optionsContainer.appendChild(btn);
+      });
+    }
+
+    function selectQuizAnswer(selected, correct, clickedBtn) {
+      if (quizAnswered) return;
+      quizAnswered = true;
+
+      const isCorrect = selected === correct;
+      updateWordMastery(quizCurrentItem.id, isCorrect);
+
+      if (isCorrect) quizScore += 10;
+      document.getElementById('quizScoreText').innerText = quizScore;
+
+      const feedback = document.getElementById('quizFeedback');
+      feedback.classList.remove('hidden');
+
+      if (isCorrect) {
+        feedback.className = "p-4 rounded-2xl border bg-emerald-950/50 border-emerald-800 text-emerald-200";
+        feedback.innerHTML = `<strong>Správně!</strong> ${quizCurrentItem.en} = ${quizCurrentItem.cz}.<br><span class="text-[11px] text-slate-300">${quizCurrentItem.def}</span>`;
+      } else {
+        feedback.className = "p-4 rounded-2xl border bg-rose-950/50 border-rose-800 text-rose-200";
+        feedback.innerHTML = `<strong>Chyba!</strong> Správná odpověď byla: <strong>${correct}</strong>.<br><span class="text-[11px] text-slate-300">${quizCurrentItem.def}</span>`;
+      }
+
+      document.getElementById('btnQuizNext').disabled = false;
+    }
+
+    window.nextQuizQuestion = function() {
+      initQuizQuestion();
+    };
+
+    /* ==================================================== */
+    /* MODE 3: TYPING / SPELLING DRILL                      */
+    /* ==================================================== */
+    function initTypingQuestion() {
+      const list = getFilteredList();
+      if (list.length === 0) return;
+
+      typeCurrentItem = list[Math.floor(Math.random() * list.length)];
+      
+      const promptText = direction === 'cz_en' ? typeCurrentItem.cz : typeCurrentItem.en;
+      document.getElementById('typeCatBadge').innerText = typeCurrentItem.category.toUpperCase();
+      document.getElementById('typePromptText').innerText = promptText;
+      document.getElementById('typeHintText').innerText = `Nápověda: ${typeCurrentItem.def}`;
+
+      const input = document.getElementById('typeInput');
+      input.value = '';
+      input.focus();
+
+      document.getElementById('typeFeedback').classList.add('hidden');
+    }
+
+    window.handleTypingSubmit = function(e) {
+      e.preventDefault();
+      if (!typeCurrentItem) return;
+
+      const inputVal = document.getElementById('typeInput').value.trim().toLowerCase();
+      const targetVal = (direction === 'cz_en' ? typeCurrentItem.en : typeCurrentItem.cz).toLowerCase();
+
+      // Normalize string check
+      const isCorrect = inputVal === targetVal || targetVal.includes(inputVal) && inputVal.length >= targetVal.length - 2;
+
+      updateWordMastery(typeCurrentItem.id, isCorrect);
+
+      const feedback = document.getElementById('typeFeedback');
+      feedback.classList.remove('hidden');
+
+      if (isCorrect) {
+        feedback.className = "p-4 rounded-2xl border bg-emerald-950/50 border-emerald-800 text-emerald-200";
+        feedback.innerHTML = `<i class="fa-solid fa-circle-check text-emerald-400 mr-1.5"></i> <strong>Přesně!</strong> Správný zápis: <strong>${direction === 'cz_en' ? typeCurrentItem.en : typeCurrentItem.cz}</strong>`;
+        setTimeout(() => initTypingQuestion(), 2000);
+      } else {
+        feedback.className = "p-4 rounded-2xl border bg-rose-950/50 border-rose-800 text-rose-200";
+        feedback.innerHTML = `<i class="fa-solid fa-circle-xmark text-rose-400 mr-1.5"></i> Není to zcela přesně. Správně má být: <strong>${direction === 'cz_en' ? typeCurrentItem.en : typeCurrentItem.cz}</strong>`;
+      }
+    };
+
+    window.revealTypeHint = function() {
+      if (!typeCurrentItem) return;
+      const target = direction === 'cz_en' ? typeCurrentItem.en : typeCurrentItem.cz;
+      showToast(`První 3 písmena: "${target.substring(0, 3)}..."`, "info");
+    };
+
+    /* ==================================================== */
+    /* WORD BANK TABLE & PARENT DASHBOARD RENDER            */
+    /* ==================================================== */
+    function renderAll() {
+      renderStats();
+      renderCurrentMode();
+      renderVocabTable();
+      checkParentNote();
+    }
+
+    function checkParentNote() {
+      const banner = document.getElementById('parentNoteBanner');
+      if (appState.parentEncouragement && appState.parentEncouragement.trim() !== '') {
+        banner.classList.remove('hidden');
+        document.getElementById('parentNoteText').innerText = `"${appState.parentEncouragement}"`;
+        document.getElementById('parentNoteTime').innerText = appState.parentNoteTime || 'Nedávno';
+      } else {
+        banner.classList.add('hidden');
+      }
+    }
+
+    function renderStats() {
+      document.getElementById('statStreak').innerText = appState.streak;
+      
+      const totalWords = defaultVocabulary.length;
+      let masteredCount = 0;
+      let totalMasterySum = 0;
+
+      defaultVocabulary.forEach(item => {
+        const score = getMastery(item.id);
+        totalMasterySum += score;
+        if (score >= 100) masteredCount++;
+      });
+
+      const overallPercent = Math.round(totalMasterySum / totalWords);
+
+      document.getElementById('statMastered').innerText = masteredCount;
+      document.getElementById('statMasteryPercent').innerText = overallPercent;
+      document.getElementById('statTodayCount').innerText = appState.todayPracticedCount;
+    }
+
+    function renderVocabTable() {
+      const tbody = document.getElementById('vocabTableBody');
+      const q = (document.getElementById('searchVocabInput')?.value || '').toLowerCase();
+      tbody.innerHTML = '';
+
+      defaultVocabulary.forEach(item => {
+        if (q && !item.en.toLowerCase().includes(q) && !item.cz.toLowerCase().includes(q)) return;
+
+        const mastery = getMastery(item.id);
+        const tr = document.createElement('tr');
+        tr.className = "hover:bg-slate-800/40 transition";
+
+        tr.innerHTML = `
+          <td class="py-2.5 px-3 font-bold text-slate-100">${item.en}</td>
+          <td class="py-2.5 px-3 text-slate-300">${item.cz}</td>
+          <td class="py-2.5 px-3">
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-slate-800 text-slate-400 uppercase">${item.category}</span>
+          </td>
+          <td class="py-2.5 px-3">
+            <div class="flex items-center gap-2">
+              <div class="w-16 bg-slate-950 h-2 rounded-full overflow-hidden border border-slate-800">
+                <div class="bg-emerald-500 h-full" style="width: ${mastery}%"></div>
+              </div>
+              <span class="text-[11px] font-mono text-slate-400">${mastery}%</span>
+            </div>
+          </td>
+          <td class="py-2.5 px-3 text-right">
+            <button onclick="speakText('${item.en}')" class="text-slate-400 hover:text-white p-1">
+              <i class="fa-solid fa-volume-high text-xs"></i>
+            </button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    window.speakText = function(text) {
+      if ('speechSynthesis' in window) {
+        const u = new SpeechSynthesisUtterance(text);
+        u.lang = 'en-CA';
+        window.speechSynthesis.speak(u);
+      }
+    };
+
+    /* ==================================================== */
+    /* PARENT DASHBOARD SPECIFIC LOGIC                      */
+    /* ==================================================== */
+    function renderParentDashboard() {
+      const totalWords = defaultVocabulary.length;
+      let totalMasterySum = 0;
+      let masteredCount = 0;
+
+      const catScores = { math: 0, english: 0, wild: 0, alberta: 0 };
+      const catCounts = { math: 0, english: 0, wild: 0, alberta: 0 };
+
+      defaultVocabulary.forEach(item => {
+        const score = getMastery(item.id);
+        totalMasterySum += score;
+        if (score >= 100) masteredCount++;
+
+        if (catScores[item.category] !== undefined) {
+          catScores[item.category] += score;
+          catCounts[item.category] += 1;
+        }
+      });
+
+      const overallPercent = Math.round(totalMasterySum / totalWords);
+
+      document.getElementById('pStatOverall').innerText = `${overallPercent}%`;
+      document.getElementById('pBarOverall').style.width = `${overallPercent}%`;
+      document.getElementById('pStatStreak').innerText = appState.streak;
+      document.getElementById('pStatMasteredCount').innerText = masteredCount;
+      document.getElementById('pStatTotalAnswers').innerText = appState.totalPracticedAnswers;
+
+      // Subject breakdown
+      ['math', 'english', 'wild', 'alberta'].forEach(cat => {
+        const pct = catCounts[cat] > 0 ? Math.round(catScores[cat] / catCounts[cat]) : 0;
+        const cap = cat.charAt(0).toUpperCase() + cat.slice(1);
+        document.getElementById(`pVal${cap}`).innerText = `${pct}%`;
+        document.getElementById(`pBar${cap}`).style.width = `${pct}%`;
+      });
+
+      document.getElementById('parentLastActiveText').innerText = appState.lastActiveDate === new Date().toISOString().split('T')[0] ? "Dnes aktivity proběhly ✅" : `Naposledy: ${appState.lastActiveDate}`;
+
+      // Render weak spots
+      renderWeakSpots();
+    }
+
+    function renderWeakSpots() {
+      const container = document.getElementById('weakSpotsContainer');
+      container.innerHTML = '';
+
+      const weakWords = defaultVocabulary.filter(item => {
+        const state = appState.masteryMap[item.id];
+        return state && (state.wrongCount > 0 || state.score < 50);
+      });
+
+      if (weakWords.length === 0) {
+        container.innerHTML = `<div class="col-span-full text-center text-xs text-slate-500 py-4">Žádné slabé stránky! Filip si vede skvěle ve všech tématech. 🎉</div>`;
+        return;
+      }
+
+      weakWords.forEach(item => {
+        const state = appState.masteryMap[item.id] || { score: 0, wrongCount: 0 };
+        const div = document.createElement('div');
+        div.className = "bg-slate-950 p-3.5 rounded-2xl border border-slate-800 flex items-center justify-between text-xs";
+        div.innerHTML = `
+          <div>
+            <div class="font-bold text-slate-200">${item.en}</div>
+            <div class="text-[11px] text-slate-400">${item.cz}</div>
+          </div>
+          <div class="text-right">
+            <span class="text-rose-400 font-bold block">${state.score}%</span>
+            <span class="text-[10px] text-slate-500">${state.wrongCount}x chyba</span>
+          </div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    window.sendParentEncouragement = function() {
+      const text = document.getElementById('parentNoteInput').value.trim();
+      if (!text) return;
+
+      appState.parentEncouragement = text;
+      appState.parentNoteTime = "Dnes v " + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      syncToCloud();
+      showToast("Vzkaz pro Filipa byl uložen a odeslán do jeho aplikace! ❤️", "success");
+      document.getElementById('parentNoteInput').value = '';
+    };
+
+    window.shareParentLink = function() {
+      const shareUrl = window.location.origin + window.location.pathname + '?view=parent';
+      navigator.clipboard ? navigator.clipboard.writeText(shareUrl) : null;
+      document.execCommand('copy');
+      showToast("Odkaz na Rodičovský Přehled zkopírován do schránky! 📋", "success");
+    };
+
+    /* ==================================================== */
+    /* UTILITY FUNCTIONS                                    */
+    /* ==================================================== */
+    function shuffleArray(arr) {
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+    }
+
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+
+      const bg = type === 'success' ? 'bg-emerald-900 border-emerald-700 text-emerald-100' :
+                 type === 'warning' ? 'bg-amber-900 border-amber-700 text-amber-100' :
+                 'bg-slate-900 border-slate-700 text-slate-100';
+
+      const icon = type === 'success' ? 'fa-circle-check text-emerald-400' : 'fa-circle-info text-sky-400';
+
+      toast.className = `pointer-events-auto px-4 py-3 rounded-2xl border shadow-2xl flex items-center gap-3 text-xs font-bold transition-all duration-300 transform translate-y-4 opacity-0 ${bg}`;
+      toast.innerHTML = `<i class="fa-solid ${icon} text-base"></i><span>${msg}</span>`;
+
+      container.appendChild(toast);
+      setTimeout(() => toast.classList.remove('translate-y-4', 'opacity-0'), 10);
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>
